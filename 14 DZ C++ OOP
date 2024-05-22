@@ -1,0 +1,214 @@
+#include <iostream>
+using namespace std;
+
+
+class Transport abstract {
+protected:
+	string description;
+	double distance;
+	double price;
+	double time;
+public:
+	void SetDescription(string description) {
+		this->description = description;
+	}
+	string GetDescription() const {
+		return description;
+	}
+	void SetDistance(double distance) {
+		this->distance = distance;
+	}
+	double GetDistance() const {
+		return distance;
+	}
+
+	// конструктор без параметров можно не делать вообще,
+	// пусть наследники обращаются сразу к продвинутому конструктору с 2 параметрами
+	// на клиенте всё равно объект создать не получится (класс помечен как абстрактный)
+
+	Transport(string description, double distance) {
+		cout << "\nTransport C-TOR 2 params\n";
+		SetDescription(description);
+		SetDistance(distance);
+	}
+
+	~Transport() {
+		cout << "Transport D-TOR\n";
+	}
+
+	// метод помечаем как виртуальный (могут быть разные реализации у классов-наследников)
+	virtual void Print() const {
+		cout << "\nПредприятие: " << description << "\n";
+		cout << "Расстояние: " << distance << "\n";
+	}
+
+	void SetPrice(double price) {
+		this->price = price;
+	}
+	double GetPrice() const {
+		return price;
+	}
+	void SetTime(double time) {
+		this->time = time;
+	}
+	double GetTime() const {
+		return time;
+	}
+};
+
+class Bus : public Transport {
+public: // делегируемся в главный конструктор текущего класса
+	Bus() : Bus("ООО Севертранс", 475) {
+		cout << "Bus C-TOR 0 params\n";
+	}
+
+	Bus(string description, double distance) : Bus(description, distance, 1500, 8) {
+		cout << "Bus C-TOR 2 params\n";
+	}
+
+	// главный конструктор Автобуса уже делегируется к конструктору из базового класса
+	Bus(string description, double distance, double price, double time) : Transport(description, distance) {
+		cout << "Bus C-TOR 4 params\n";
+		SetPrice(price);
+		SetTime(time);
+	}
+	~Bus() {
+		cout << "Bus D-TOR\n";
+	}
+
+	void Print() const override {
+		Transport::Print();
+		cout << "Автобус:" << "\n";
+		cout << "Стоимость проезда: " << price << "\n";
+		cout << "Длительность: " << time << "\n\n";
+	}
+};
+
+class Plane : public Transport {
+public: // делегируемся в главный конструктор текущего класса
+	Plane() : Plane("ООО Севертранс", 475) {
+		cout << "Plane C-TOR 0 params\n";
+	}
+
+	Plane(string description, double distance) : Plane(description, distance, 6000, 2) {
+		cout << "Plane C-TOR 2 params\n";
+	}
+
+	Plane(string description, double distance, double price, double time) : Transport(description, distance) {
+		cout << "Plane C-TOR 4 params\n";
+		SetPrice(price);
+		SetTime(time);
+	}
+	~Plane() {
+		cout << "Plane D-TOR\n";
+	}
+
+	void Print() const override {
+		Transport::Print();
+		cout << "Самолет:" << "\n";
+		cout << "Стоимость перелета: " << price << "\n";
+		cout << "Длительность: " << time << "\n\n";
+	}
+};
+
+class Train : public Transport {
+public: // делегируемся в главный конструктор текущего класса
+	Train() : Train("ООО Севертранс", 475) {
+		cout << "Train C-TOR 0 params\n";
+	}
+
+	Train(string description, double distance) : Train(description, distance, 1200, 12) {
+		cout << "Train C-TOR 2 params\n";
+	}
+
+	Train(string description, double distance, double price, double time) : Transport(description, distance) {
+		cout << "Train C-TOR 4 params\n";
+		SetPrice(price);
+		SetTime(time);
+	}
+	~Train() {
+		cout << "Train D-TOR\n";
+	}
+
+	void Print() const override {
+		Transport::Print();
+		cout << "Поезд:" << "\n";
+		cout << "Стоимость проезда: " << price << "\n";
+		cout << "Длительность: " << time << "\n\n";
+	}
+};
+
+class Taxi : public Transport {
+public: // делегируемся в главный конструктор текущего класса
+	Taxi() : Taxi("ООО Севертранс", 475) {
+		cout << "Taxi C-TOR 0 params\n";
+	}
+
+	Taxi(string description, double distance) : Taxi(description, distance, 20000, 6) {
+		cout << "Taxi C-TOR 2 params\n";
+	}
+
+	Taxi(string description, double distance, double price, double time) : Transport(description, distance) {
+		cout << "Taxi C-TOR 4 params\n";
+		SetPrice(price);
+		SetTime(time);
+	}
+	~Taxi() {
+		cout << "Taxi D-TOR\n";
+	}
+
+	void Print() const override {
+		Transport::Print();
+		cout << "Такси:" << "\n";
+		cout << "Стоимость проезда: " << price << "\n";
+		cout << "Длительность: " << time << "\n\n";
+	}
+};
+
+class GroupTransfer : public Transport {
+public: // делегируемся в главный конструктор текущего класса
+	GroupTransfer() : GroupTransfer("ООО Севертранс", 475) {
+		cout << "GroupTransfer C-TOR 0 params\n";
+	}
+
+	GroupTransfer(string description, double distance) : GroupTransfer(description, distance, 3000, 6) {
+		cout << "GroupTransfer C-TOR 2 params\n";
+	}
+
+	GroupTransfer(string description, double distance, double price, double time) : Transport(description, distance) {
+		cout << "GroupTransfer C-TOR 4 params\n";
+		SetPrice(price);
+		SetTime(time);
+	}
+	~GroupTransfer() {
+		cout << "GroupTransfer D-TOR\n";
+	}
+
+	void Print() const override {
+		Transport::Print();
+		cout << "Групповой трансфер:" << "\n";
+		cout << "Стоимость проезда: " << price << "\n";
+		cout << "Длительность: " << time << "\n\n";
+	}
+};
+
+int main()
+{
+	setlocale(0, "");
+
+	Bus b("ПепперТранс", 500, 735, 7);
+	b.Print();
+
+	Plane p;
+	p.Print();
+
+	Train t;
+	t.Print();
+
+	Taxi ta;
+	ta.Print();
+
+	GroupTransfer gp;
+	gp.Print();
+
+}
